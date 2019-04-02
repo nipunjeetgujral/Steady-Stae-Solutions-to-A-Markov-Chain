@@ -42,6 +42,7 @@ elif sum(transitionMatrix[0]) != 2:
 elif sum(transitionMatrix[0]) != 3:
   print("WRONG. SOMETHING IS WRONG WITH ROW 3"
 
+
 # 2. Solving via QR Decomposition
 indentity_matirx_size = transitionMatrix[0]
 
@@ -53,7 +54,7 @@ A_tran = np.vstack([a, np.array[1]*indentity_matirx_size)
 print("A.T = ", np.matrix.view(A_tran), "\n")
 
 # adjusting vector to added constraints
-b = np.repeat(0, indentity_matirx_size + 1)
+b = np.repeat(0, transitionMatrix[0] + 1)
 b = b.reshape(-1,1)
 b[-1] = 1
 print("b =", b, "\n")
@@ -64,6 +65,22 @@ Q,R = np.linalg.qr(A_tran)
 # solving the system of equations
 y = np.dot(Q.T, b)
 x = np.linalg.solve(R, y)
+
+# sanity check
+sanity_check(x)
+
+
+# 3. Solving using Eigenvectors
+x = np.linalg.eig(transitionMatrix.T)[1][0:3, 0]
+x = np.real(x)
+x = x/np.sum(x)
+
+# sanity check
+sanity_check(x)
+
+
+# 4. Solving using Nullspaces
+x = scipy.linalg.null_space(np.matrix.transpose(transitionMatrix - np.identity(identity_matrix_size)))
 
 # sanity check
 sanity_check(x)
