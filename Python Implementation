@@ -1,0 +1,69 @@
+import numpy as np
+import math as m
+import random as rm
+import scipy
+
+
+# Establish a method of varifying working
+
+def sanity_check(ary):
+  print("Your answer:", ary.T, "\n")
+  
+  #sanity check
+  print("Sanity Check!")
+  print("Logic: Elemenst should add up to 1 since they are probabilities")
+   
+  #quailitifer
+  if np.sum(ary) == 1:
+    return(print("Sum is:", np.sum(ary), "\nAll is good"))
+   else:
+    return(print("You did something wrong"))
+
+
+# 1. Establishing a Transition Matrix
+
+# possible states
+states = ['state1', 'state2', 'state3']
+
+# Possible sequence of events
+transitionNames = [["SS", "SR", ""SI], ["RS", "RR", "RI"], ["IS", "IR", "II"]]
+
+#probability of transitioning
+transitionMatrix = np.array([[0.4, 0.4, 0.2], [0.0, 0.5, 0.5], [0.1, 0.3, 0.6]])
+print("Shape:", transitionMatrix.shape, "\n"*2, transitionMatrix)
+
+#sanity check
+if(sum(transitionMatrix[0] + transitionMatrix[1] + transitionMatrix[2] == 3:
+  print("All is good, continue \n")
+elif sum(transitionMatrix[0]) != 1:
+  print("WRONG. SOMETHING IS WRONG WITH ROW 1"
+elif sum(transitionMatrix[0]) != 2:
+  print("WRONG. SOMETHING IS WRONG WITH ROW 2"
+elif sum(transitionMatrix[0]) != 3:
+  print("WRONG. SOMETHING IS WRONG WITH ROW 3"
+
+# 2. Solving via QR Decomposition
+indentity_matirx_size = transitionMatrix[0]
+
+# subtracting identy matrix and then taking the transpose of the matrix
+A = np.matrix.transpose(transitionMatrix - np.identity(indentity_matirx_size))
+
+# adding constraints
+A_tran = np.vstack([a, np.array[1]*indentity_matirx_size)
+print("A.T = ", np.matrix.view(A_tran), "\n")
+
+# adjusting vector to added constraints
+b = np.repeat(0, indentity_matirx_size + 1)
+b = b.reshape(-1,1)
+b[-1] = 1
+print("b =", b, "\n")
+
+# solving using QR decomposition
+Q,R = np.linalg.qr(A_tran)
+
+# solving the system of equations
+y = np.dot(Q.T, b)
+x = np.linalg.solve(R, y)
+
+# sanity check
+sanity_check(x)
